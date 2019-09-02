@@ -19,6 +19,7 @@ from ckeditor_uploader.utils import storage
 from .utils import is_valid_image_extension
 
 
+
 def _get_user_path(user):
     user_path = ''
 
@@ -208,3 +209,38 @@ def browse(request):
         'form': form
     }
     return render(request, 'ckeditor/browse.html', context)
+
+
+@csrf_exempt
+def delete(request):
+    path = request.POST.get('path', None)
+    thumb_path = request.POST.get('thumb-path', None)
+
+    if path is None:
+        return JsonResponse({
+            'success': False,
+            'message': 'Path is not valid'
+        })
+
+    base_dir = settings.BASE_DIR
+    full_path = base_dir + path
+    thumb_full_path = None
+
+    if thumb_path:
+        thumb_full_path = base_dir + thumb_path
+
+    if os.path.exists(full_path) and os.path.isfile(full_path):
+        os.remove(full_path)
+
+        if os.path.exists(thumb_full_path) and os.path.isfile(thumb_full_path):
+            os.remove(thumb_full_path)
+
+        return JsonResponse({
+            'success': True,
+            'message': 'File is deleted'
+        })
+    else:
+        return JsonResponse({
+            'success': False,
+            'message': 'Invalid path (no file found)'
+        })
