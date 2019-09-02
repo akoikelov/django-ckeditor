@@ -93,7 +93,7 @@
                     {% endfor %} <!-- for dir in dirs -->
                 {% else %}
                     {% for file in files %}
-                        <li>
+                        <li data-file-src="{{ file.src }}">
                             <a class="thumb"
                                href="{% if file.is_image %}{{ file.src }}{% else %}{{ file.thumb }}{% endif %}">
                                 <img src="{{ file.thumb }}" style="max-width: 75px;"/>
@@ -105,6 +105,10 @@
                                 <div class="submit-row">
                                     <input href="{{ file.src }}" class="default embed" type="submit" name="_embed"
                                            value="Embed Image"/>
+                                    <button class="delete" data-path="{{ file.src }}"
+                                                    data-thumb-path="{{ file.thumb }}">
+                                                Delete image
+                                            </button>
                                 </div>
                             </div>
                         </li>
