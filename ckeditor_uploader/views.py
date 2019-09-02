@@ -222,12 +222,12 @@ def delete(request):
             'message': 'Path is not valid'
         })
 
-    base_dir = settings.BASE_DIR
-    full_path = base_dir + path
+    full_path = path.replace(settings.MEDIA_URL, settings.MEDIA_ROOT + '/')
+
     thumb_full_path = None
 
     if thumb_path:
-        thumb_full_path = base_dir + thumb_path
+        thumb_full_path = thumb_path.replace(settings.MEDIA_URL, settings.MEDIA_ROOT + '/')
 
     if os.path.exists(full_path) and os.path.isfile(full_path):
         os.remove(full_path)
