@@ -1,6 +1,7 @@
 from __future__ import absolute_import, unicode_literals
 
 import os
+import urllib.parse
 from datetime import datetime
 
 from django.conf import settings
@@ -222,12 +223,12 @@ def delete(request):
             'message': 'Path is not valid'
         })
 
-    full_path = path.replace(settings.MEDIA_URL, settings.MEDIA_ROOT + '/')
+    full_path = urllib.parse.unquote(path.replace(settings.MEDIA_URL, settings.MEDIA_ROOT + '/'))
 
     thumb_full_path = None
 
     if thumb_path:
-        thumb_full_path = thumb_path.replace(settings.MEDIA_URL, settings.MEDIA_ROOT + '/')
+        thumb_full_path = urllib.parse.unquote(thumb_path.replace(settings.MEDIA_URL, settings.MEDIA_ROOT + '/'))
 
     if os.path.exists(full_path) and os.path.isfile(full_path):
         os.remove(full_path)
